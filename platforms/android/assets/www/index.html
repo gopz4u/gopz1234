@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova_plugins.js"></script>
+    <script type="text/javascript" charset="utf-8">
+function read_contacts(){
+   var options = new ContactFindOptions();
+   options.filter="";
+   options.filter="";
+   options.multiple=true;
+   var fields = ["*"];  //"*" will return all contact fields
+   navigator.contacts.find(fields, onSuccess, onError, options);
+}
+
+// display the address information for all contacts
+function onSuccess(contacts) {
+  //console.log(JSON.stringify(contacts))
+   var li = '';
+   $.each(contacts, function(key, value) {
+        if(value.name){
+            $.each(value.name, function(key, value) {
+               if(key == 'formatted'){
+                   name = value;
+               }                      
+            });
+        }
+        if(value.phoneNumbers){
+            $.each(value.phoneNumbers, function(key, value) {
+                phone = value.value;
+            });
+        }                    
+        li += '<li style="text-decoration:none;">'+name+' '+phone+'</li>';
+   }); 
+
+   $("#contact").html(li);   
+}
+
+function onError(contactError) {
+   alert('onError!');
+}
+
+    </script>
+  </head>
+  <body>
+    <h1>Example</h1>
+    <p>Find Contacts</p>
+	<ol id="contact"></ol>
+  </body>
+</html>
